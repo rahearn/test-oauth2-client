@@ -16,9 +16,15 @@ get '/auth' do
   )
 end
 
+get '/access' do
+  access_token = client.password.get_access_token(params[:username], params[:password])
+  user = JSON.parse(access_token.get('/current_user.json'))
+  user.inspect
+end
+
 get '/auth/callback' do
   access_token = client.web_server.get_access_token(params[:code], :redirect_uri => redirect_uri)
-  user = JSON.parse(access_token.get('/me'))
+  user = JSON.parse(access_token.get('/current_user.json'))
   user.inspect
 end
 
