@@ -1,0 +1,11 @@
+%h1= @header
+%p
+  %a{:href => '/businesses'} List businesses
+  %form{:action => '/access', :method => :get}
+    %label{:for => :username} Login
+    %input#username{:type => :text, :name => :username}
+    %br/
+    %label{:for => :password} Password
+    %input#password{:type => :password, :name => :password}
+    %br/
+    %input#submit{:type => :submit, :name => :submit, :value => 'Submit'}

@@ -1,0 +1,29 @@
+%h1 Businesses
+%p
+  %ul
+    - @businesses.each do |business|
+      %li= business.inspect
+%p
+  %a{:href => '/logout'} Log Out
+  %form{:action => '/business', :method => :post}
+    %label{:for => :name} Business Name
+    %input#name{:type => :text, :name => :name}
+    %br/
+    Address
+    %br/
+    %label{:for => :street} Street
+    %input#street{:type => :text, :name => :street}
+    %br/
+    %label{:for => :city} City
+    %input#city{:type => :text, :name => :city}
+    %br/
+    %label{:for => :state} State
+    %input#state{:type => :text, :name => :state}
+    %br/
+    %label{:for => :zip} Zip
+    %input#zip{:type => :text, :name => :zip}
+    %br/
+    %label{:for => :phone_number} Phone Number
+    %input#phone_number{:type => :text, :name => :phone_number}
+    %br/
+    %input#submit{:type => :submit, :name => :submit, :value => 'Submit'}
