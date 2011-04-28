@@ -48,7 +48,6 @@ end
 
 post '/business' do
   access_token = OAuth2::AccessToken.new client, request.cookies['access_token']
-  name = params[:name]
   @business = JSON.parse access_token.post('/businesses.json', :business => {:name => params[:name], :address => {:street1 => params[:street], :city => params[:city], :state => params[:state], :zip => params[:zip]}, :phone_number => params[:phone_number], :description => 'created by sinatra app'})
   haml :new_business
 end
