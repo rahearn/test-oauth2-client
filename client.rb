@@ -35,6 +35,12 @@ get '/access' do
   user.inspect
 end
 
+get '/businesses' do
+  access_token = OAuth2::AccessToken.new client, request.cookies['access_token']
+  businesses = JSON.parse access_token.get('/businesses.json')
+  businesses.inspect
+end
+
 def redirect_uri
   uri = URI.parse(request.url)
   uri.path = '/auth/callback'
