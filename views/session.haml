@@ -1,6 +1,8 @@
 %h1= @header
 %p
   %a{:href => '/businesses'} List businesses
+%p
+  %a{:href => '/auth'} Login via CW
   %form{:action => '/access', :method => :get}
     %label{:for => :username} Login
     %input#username{:type => :text, :name => :username}

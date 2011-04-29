@@ -29,13 +29,14 @@ end
 
 get '/auth/callback' do
   access_token = client.web_server.get_access_token params[:code], :redirect_uri => redirect_uri
+  response.set_cookie 'access_token', {:value => access_token.token, :path => '/'}
   @user = JSON.parse access_token.get('/current_user.json')
   haml :user
 end
 
 get '/access' do
   access_token = client.password.get_access_token params[:username], params[:password]
-  response.set_cookie 'access_token', access_token.token
+  response.set_cookie 'access_token', {:value => access_token.token, :path => '/'}
   @user = JSON.parse access_token.get('/current_user.json')
   haml :user
 end
