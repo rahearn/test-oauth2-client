@@ -1,10 +1,18 @@
 require 'sinatra'
-require 'oauth2'
+require 'rack/oauth2'
 require 'json'
 
 def client
   # app id, app secret, and site are all test-env specific
-  OAuth2::Client.new('4db87a8a77d1eaa566000001', '56b257762db953aa4a1b36cfd16d3b1d33bb5005cc51f272f1c817f694ff7cff', :site => 'http://localhost:3000/')
+  Rack::OAuth2::Client.new(
+    :identifier   => '3696e1467b8af7bf8a0a27c02a45c711cd308cb6',
+    :secret       => 'd3b51712962a45bc5ba9ff9ad5460271ac70afba',
+    :redirect_uri => redirect_uri,
+    :scheme       => 'http',
+    :host         => 'localhost',
+    :port         => 3000,
+    :token_endpoint => '/oauth/access_token'
+  )
 end
 
 get '/' do
@@ -16,22 +24,24 @@ get '/logout' do
   'logged out'
 end
 
-get '/auth' do
-  redirect client.web_server.authorize_url(
-    :redirect_uri => redirect_uri
-  )
-end
+# get '/auth' do
+#   redirect client.web_server.authorize_url(
+#     :redirect_uri => redirect_uri
+#   )
+# end
 
-get '/auth/callback' do
-  access_token = client.web_server.get_access_token params[:code], :redirect_uri => redirect_uri
-  user = JSON.parse access_token.get('/current_user.json')
-  user.inspect
-end
+# get '/auth/callback' do
+#   access_token = client.web_server.get_access_token params[:code], :redirect_uri => redirect_uri
+#   user = JSON.parse access_token.get('/current_user.json')
+#   user.inspect
+# end
 
 get '/access' do
-  access_token = client.password.get_access_token params[:username], params[:password]
-  response.set_cookie 'access_token', access_token.token
-  user = JSON.parse access_token.get('/current_user.json')
+  c = client
+  c.resource_owner_credentials = params[:username], params[:password]
+  access_token = c.access_token!
+  #response.set_cookie 'access_token', access_token.token
+  user = JSON.parse access_token.get('http://localhost:3000/current_user.json')
   user.inspect
 end
 
