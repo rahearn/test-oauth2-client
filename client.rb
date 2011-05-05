@@ -7,7 +7,7 @@ set :haml, :format => :html5
 
 def client
   # app id, app secret, and site are all test-env specific
-  OAuth2::Client.new('4db87a8a77d1eaa566000001', '56b257762db953aa4a1b36cfd16d3b1d33bb5005cc51f272f1c817f694ff7cff', :site => 'http://localhost:3000/')
+  OAuth2::Client.new('3696e1467b8af7bf8a0a27c02a45c711cd308cb6', 'd3b51712962a45bc5ba9ff9ad5460271ac70afba', :site => 'http://localhost:3000/')
 end
 
 get '/' do
