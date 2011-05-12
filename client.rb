@@ -3,6 +3,7 @@ require 'rack/oauth2'
 require 'json'
 require 'haml'
 
+enable :sessions
 set :haml, :format => :html5
 
 def client
@@ -45,14 +46,21 @@ get '/access' do
   c = client
   c.resource_owner_credentials = params[:username], params[:password]
   access_token = c.access_token!
-  #response.set_cookie 'access_token', access_token.token
-  user = JSON.parse access_token.get('http://localhost:3000/current_user.json')
-  user.inspect
+  session[:token] = access_token
+  @user = JSON.parse(access_token.get('http://localhost:3000/api/v1/current_user.json'))['result']
+  haml :user
+end
+
+get '/update_user' do
+  json = %|{"user":{"postal_code":"#{params[:postal_code]}"}}|
+  access_token = session[:token]
+  @user = JSON.parse(access_token.put('http://localhost:3000/api/v1/current_user.json', json, :content_type => 'application/json'))['result']
+  haml :user
 end
 
 # get '/businesses' do
-#   access_token = OAuth2::AccessToken.new client, request.cookies['access_token']
-#   @businesses = JSON.parse access_token.get('/businesses.json')
+#   access_token = session[:token]
+#   @businesses = JSON.parse access_token.get("http://localhost:3000/api/v1/businesses/#{params[:id]}/locations.json")
 #   haml :businesses
 # end
 
