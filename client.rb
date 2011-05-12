@@ -5,8 +5,8 @@ require 'json'
 def client
   # app id, app secret, and site are all test-env specific
   Rack::OAuth2::Client.new(
-    :identifier   => '3696e1467b8af7bf8a0a27c02a45c711cd308cb6',
-    :secret       => 'd3b51712962a45bc5ba9ff9ad5460271ac70afba',
+    :identifier   => '0c80181f5120de2451b551f4fe71a57b7f49ffb9',
+    :secret       => '297d62ed72ee80d10fc900e0d88839482da57d1b',
     :redirect_uri => redirect_uri,
     :scheme       => 'http',
     :host         => 'localhost',
