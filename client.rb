@@ -1,6 +1,9 @@
 require 'sinatra'
 require 'rack/oauth2'
 require 'json'
+require 'haml'
+
+set :haml, :format => :html5
 
 def client
   # app id, app secret, and site are all test-env specific
@@ -16,12 +19,14 @@ def client
 end
 
 get '/' do
-  'working'
+  @header = 'Log In'
+  haml :session
 end
 
 get '/logout' do
   response.set_cookie 'access_token', ''
-  'logged out'
+  @header = 'Logged Out'
+  haml :session
 end
 
 # get '/auth' do
@@ -44,6 +49,18 @@ get '/access' do
   user = JSON.parse access_token.get('http://localhost:3000/current_user.json')
   user.inspect
 end
+
+# get '/businesses' do
+#   access_token = OAuth2::AccessToken.new client, request.cookies['access_token']
+#   @businesses = JSON.parse access_token.get('/businesses.json')
+#   haml :businesses
+# end
+
+# post '/business' do
+#   access_token = OAuth2::AccessToken.new client, request.cookies['access_token']
+#   @business = JSON.parse access_token.post('/businesses.json', :business => {:name => params[:name], :address => {:street1 => params[:street], :city => params[:city], :state => params[:state], :zip => params[:zip]}, :phone_number => params[:phone_number], :description => 'created by sinatra app'})
+#   haml :new_business
+# end
 
 def redirect_uri
   uri = URI.parse(request.url)
