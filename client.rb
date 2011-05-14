@@ -47,7 +47,7 @@ get '/access' do
   c.resource_owner_credentials = params[:username], params[:password]
   access_token = c.access_token!
   session[:token] = access_token
-  @user = JSON.parse(access_token.get('http://localhost:3000/api/v1/current_user.json'))['result']
+  @user = JSON.parse(access_token.get('http://localhost:3000/api/v1/current_user.json', :CONTENT_TYPE => 'application/json'))['result']
   haml :user
 end
 
